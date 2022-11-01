@@ -73,7 +73,7 @@ def test_all_valid(client, attr_dict_list):
 	for attr_dict in attr_dict_list:
 		helper_test_valid(client, attr_dict)  
      
-
+#Tests that check for response when argument is missing
 def test_Medu_missing(client): helper_test_missing_var(client, attr_dict, "Medu")
 def test_Fedu_missing(client): helper_test_missing_var(client, attr_dict, "Fedu")
 def test_Mjob_missing(client): helper_test_missing_var(client, attr_dict, "Mjob")
@@ -81,7 +81,15 @@ def test_Fjob_missing(client): helper_test_missing_var(client, attr_dict, "Fjob"
 def test_reason_missing(client): helper_test_missing_var(client, attr_dict, "reason")
 def test_studytime_missing(client): helper_test_missing_var(client, attr_dict, "studytime")
 def test_failures_missing(client): helper_test_missing_var(client, attr_dict, "failures")
+def test_schoolsup_missing(client): helper_test_missing_var(client, attr_dict, "schoolsup")
+def test_famsup_missing(client): helper_test_missing_var(client, attr_dict, "famsup")
+def test_paid_missing(client): helper_test_missing_var(client, attr_dict, "paid")
+def test_higher_missing(client): helper_test_missing_var(client, attr_dict, "higher")
+def test_internet_missing(client): helper_test_missing_var(client, attr_dict, "internet")
+def test_health_missing(client): helper_test_missing_var(client, attr_dict, "health")
+def test_absences_missing(client): helper_test_missing_var(client, attr_dict, "absences")
 
+#Tests that check for response when a parameter is invalid (i.e. wrong type)
 def test_Medu_invalid(client): helper_test_invalid_var(client, attr_dict, "Medu", "high school")
 def test_Fedu_invalid(client): helper_test_invalid_var(client, attr_dict, "Fedu", "college")
 def test_Mjob_invalid(client): helper_test_invalid_var(client, attr_dict, "Mjob", 0)
@@ -89,7 +97,16 @@ def test_Fjob_invalid(client): helper_test_invalid_var(client, attr_dict, "Fjob"
 def test_reason_invalid(client): helper_test_invalid_var(client, attr_dict, "reason", 25)
 def test_studytime_invalid(client): helper_test_invalid_var(client, attr_dict, "studytime", "3 hours")
 def test_failures_invalid(client): helper_test_invalid_var(client, attr_dict, "failures", "none")
+def test_schoolsup_invalid(client): helper_test_range_var(client, attr_dict, "schoolsup", 100)
+def test_famsup_invalid(client): helper_test_range_var(client, attr_dict, "famsup", 20)
+def test_paid_invalid(client): helper_test_range_var(client, attr_dict, "paid", 2)
+def test_higher_invalid(client): helper_test_range_var(client, attr_dict, "higher", 1)
+def test_internet_invalid(client): helper_test_range_var(client, attr_dict, "internet", 43)
+def test_health_invalid(client): helper_test_range_var(client, attr_dict, "health", "not_an_int")
+def test_absences_invalid(client): helper_test_range_var(client, attr_dict, "absences", "not_an_int")
 
+
+#Tests that check when when a parameter is out of bounds but is the correct type
 def test_Medu_range(client): helper_test_range_var(client, attr_dict, "Medu", 5)
 def test_Fedu_range(client): helper_test_range_var(client, attr_dict, "Fedu", -1)
 def test_Mjob_range(client): helper_test_range_var(client, attr_dict, "Mjob", "professor")
@@ -97,3 +114,10 @@ def test_Fjob_range(client): helper_test_range_var(client, attr_dict, "Fjob", "d
 def test_reason_range(client): helper_test_range_var(client, attr_dict, "reason", "sports")
 def test_studytime_range(client): helper_test_range_var(client, attr_dict, "studytime", 0)
 def test_failures_range(client): helper_test_range_var(client, attr_dict, "failures", 0.5)
+def test_schoolsup_range(client): helper_test_range_var(client, attr_dict, "schoolsup", "y")
+def test_famsup_range(client): helper_test_range_var(client, attr_dict, "famsup", "n")
+def test_paid_range(client): helper_test_range_var(client, attr_dict, "paid", "n")
+def test_higher_range(client): helper_test_range_var(client, attr_dict, "higher", "y")
+def test_internet_range(client): helper_test_range_var(client, attr_dict, "internet", "y")
+def test_health_range(client): helper_test_range_var(client, attr_dict, "health", 0)
+def test_absences_range(client): helper_test_range_var(client, attr_dict, "absences", 94)
