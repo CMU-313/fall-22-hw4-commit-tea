@@ -3,16 +3,32 @@ import pytest
 
 from app.handlers.routes import configure_routes
 
-attr_dict = {"Medu": 3, "Fedu": 2, "Mjob": "health", "Fjob": "teacher", "reason": "reputation", 
-             "studytime": 3, "failures": 2, "schoolsup": "yes", "famsup": "no", 
-             "paid": "yes", "higher": "yes", "internet": "yes", "health": 2, "absences": 16}
+attr_dict = {"Medu": 0, "Fedu": 3, "Mjob": "health", "Fjob": "teacher", "reason": "reputation",
+            "studytime": 3, "failures": 1, "schoolsup": "yes", "famsup": "no",
+            "paid": "yes", "higher": "yes", "internet": "yes", "health": 5, "absences": 16}
+ 
+valid_attrs_1 = {"Medu":3, "Fedu": 2, "Mjob":"teacher", "Fjob":"other", "reason":"reputation", "studytime": 4, "failures": 3,
+                "schoolsup":"no", "famsup":"yes", "paid":"no", "higher": "yes", "internet":"no", "health": 3, "absences": 49}
+ 
+valid_attrs_2 = {"Medu":4, "Fedu":1, "Mjob":"services", "Fjob":"at_home","reason":"home","studytime":"1",
+                 "failures": 2,"schoolsup":"yes","famsup":"yes","paid":"no","higher": "no","internet":"no",
+                 "health": 2,"absences": 93}
+
+valid_attrs_3 = {"Medu":1,"Fedu":0,"Mjob":"at_home", "Fjob":"health", "reason":"other", "studytime": 2,"failures": 5,
+                 "schoolsup":"no", "famsup":"no", "paid":"yes", "higher": "yes", "internet":"no", "health":4, "absences":0}
+
+valid_attrs_4 = {"Medu":2, "Fedu":4, "Mjob":"other", "Fjob":"services", "reason":"course", "studytime": 1, "failures": 0,
+                 "schoolsup":"no", "famsup":"yes", "paid":"no", "higher": "yes", "internet":"yes", "health":1, "absences": 11}
 
 @pytest.fixture()
 def client():
     app = Flask(__name__)
     return app.test_client()
 
-    
+@pytest.fixture()
+def attr_dict_list():
+    return [attr_dict, valid_attrs_1, valid_attrs_2, valid_attrs_3, valid_attrs_4]
+
 def test_base_route():
     app = Flask(__name__)
     configure_routes(app)
@@ -66,7 +82,6 @@ def test_reason_missing(client): helper_test_missing_var(client, attr_dict, "rea
 def test_studytime_missing(client): helper_test_missing_var(client, attr_dict, "studytime")
 def test_failures_missing(client): helper_test_missing_var(client, attr_dict, "failures")
 
-# how to test other than string or int?
 def test_Medu_invalid(client): helper_test_invalid_var(client, attr_dict, "Medu", "high school")
 def test_Fedu_invalid(client): helper_test_invalid_var(client, attr_dict, "Fedu", "college")
 def test_Mjob_invalid(client): helper_test_invalid_var(client, attr_dict, "Mjob", 0)
