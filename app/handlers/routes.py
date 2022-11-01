@@ -29,6 +29,48 @@ def configure_routes(app):
     ---
     parameters:
       - in: query
+        name: studytime
+        type: int
+        description: "Weekly study time (numeric: 1 - <2 hours, 2 - 2 to 5 hours, 3 - 5 to 10 hours, or 4 - >10 hours)"
+        enum: ['1', '2', '3', '4']
+        required: true
+        default: '1'
+      - in: query
+        name: reason
+        type: string
+        description: "reason to choose this school (nominal: close to 'home', school 'reputation', 'course' preference or 'other')"
+        enum: ['home', 'reputation', 'course', 'other']
+        required: true
+        default: '1'
+      - in: query
+        name: Fjob
+        type: string
+        description: "Father's job (nominal: 'teacher', 'health' care related, civil 'services' (e.g. administrative or police), 'at_home' or 'other'))"
+        enum: ['teacher', 'health care', 'civil_services', 'at_home', 'other']
+        required: true
+        default: 'teacher'
+      - in: query
+        name: Mjob
+        type: string
+        description: "Mother's job (nominal: 'teacher', 'health' care related, civil 'services' (e.g. administrative or police), 'at_home' or 'other'))"
+        enum: ['teacher', 'health care', 'civil_services', 'at_home', 'other']
+        required: true
+        default: 'teacher'
+      - in: query
+        name: Fedu
+        type: int
+        description: "Father's education (numeric: 0 - none, 1 - primary education (4th grade), 2 - 5th to 9th grade, 3 - secondary education or 4 - higher education)"
+        enum: ['0', '1', '2', '3', '4']
+        required: true
+        default: '0'
+      - in: query
+        name: Medu
+        type: int
+        description: "Mother's education (numeric: 0 - none, 1 - primary education (4th grade), 2 - 5th to 9th grade, 3 - secondary education or 4 - higher education)"
+        enum: ['0', '1', '2', '3', '4']
+        required: true
+        default: '0'
+      - in: query
         name: absences
         type: int
         description: 'Number of school absences (numeric: from 0 to 93)'
