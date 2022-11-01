@@ -5,6 +5,9 @@ from flasgger import swag_from
 
 
 app = Flask(__name__)
+app.config['SWAGGER'] = {
+    'title': 'Student Success Model API'
+}
 configure_routes(app)
 swagger = Swagger(app)
 
