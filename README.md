@@ -32,9 +32,6 @@ The same instructions for Mac OS **should** work for windows, but if it doesn't,
 
 The repository contains `Pipfile` that declares which packages are necessary to run the `model_build.ipnyb`.
 
-#### Location of Tests
-Tests can be found [here](https://github.com/CMU-313/fall-22-hw4-commit-tea/blob/api-tests/app/tests/test_routes.py)
-
 To install packages declared by the Pipfile, run `pipenv install` in the command line from the root directory.
 
 You might want to use additional packages throughout the assignment.
@@ -107,3 +104,6 @@ If you're not in the Pipenv shell, then execute the following command from the `
 ```terminal
 pipenv run pytest
 ```
+
+#### Location of Tests
+Tests can be found [here](https://github.com/CMU-313/fall-22-hw4-commit-tea/blob/api-tests/app/tests/test_routes.py)
