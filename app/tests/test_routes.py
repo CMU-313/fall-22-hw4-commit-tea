@@ -43,35 +43,29 @@ def test_base_route():
 def helper_test_missing_var(client, attr_dict, var):
     attr_dict_new = dict(attr_dict)
     del attr_dict_new[var]
-    def f():
-        response = client.get("\predict", params=attr_dict_new)
-        assert response.status_code == 400
-    return f
+    response = client.get("/predict", json=attr_dict_new)
+    assert response.status_code == 400
  
 def helper_test_invalid_var(client, attr_dict, var, new_val):
     attr_dict_new = dict(attr_dict)
     attr_dict_new[var] = new_val
-    def f():
-        response = client.get("\predict", params=attr_dict_new)
-        assert response.status_code == 406
-    return f
+    response = client.get("/predict", json=attr_dict_new)
+    assert response.status_code == 406
 
 def helper_test_range_var(client, attr_dict, var, new_val):
     attr_dict_new = dict(attr_dict)
     attr_dict_new[var] = new_val
-    def f():
-        response = client.get("\predict", params=attr_dict_new)
-        assert response.status_code == 422
-    return f
+    response = client.get("/predict", json=attr_dict_new)
+    assert response.status_code == 422
  
 def helper_test_valid(client, attr_dict):
     attr_dict_new = dict(attr_dict)
-    response = client.get("\predict", params=attr_dict_new)
+    response = client.get("/predict", json=attr_dict_new)
     assert response.status_code == 200
 
 def test_all_valid(client, attr_dict_list):
-	for attr_dict in attr_dict_list:
-		helper_test_valid(client, attr_dict)  
+	for d in attr_dict_list:
+		helper_test_valid(client, d)  
      
 #Tests that check for response when argument is missing
 def test_Medu_missing(client): helper_test_missing_var(client, attr_dict, "Medu")
@@ -105,7 +99,6 @@ def test_internet_invalid(client): helper_test_range_var(client, attr_dict, "int
 def test_health_invalid(client): helper_test_range_var(client, attr_dict, "health", "not_an_int")
 def test_absences_invalid(client): helper_test_range_var(client, attr_dict, "absences", "not_an_int")
 
-
 #Tests that check when when a parameter is out of bounds but is the correct type
 def test_Medu_range(client): helper_test_range_var(client, attr_dict, "Medu", 5)
 def test_Fedu_range(client): helper_test_range_var(client, attr_dict, "Fedu", -1)
@@ -120,4 +113,4 @@ def test_paid_range(client): helper_test_range_var(client, attr_dict, "paid", "n
 def test_higher_range(client): helper_test_range_var(client, attr_dict, "higher", "y")
 def test_internet_range(client): helper_test_range_var(client, attr_dict, "internet", "y")
 def test_health_range(client): helper_test_range_var(client, attr_dict, "health", 0)
-def test_absences_range(client): helper_test_range_var(client, attr_dict, "absences", 94)
+def test_absences_range(client): helper_test_range_var(client, attr_dict, "absences", 94)     
