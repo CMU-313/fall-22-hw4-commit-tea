@@ -70,14 +70,14 @@ def test_all_valid(client, attr_dict_list):
 def helper_test_extra_var(client, attr_dict, new_var, val_to_add):
     attr_dict_new = dict(attr_dict)
     attr_dict_new[new_var] = val_to_add
-    response = client.get("\predict", params=attr_dict_new)
+    response = client.get("\predict", json=attr_dict_new)
     assert response.status_code == 422
 
 def helper_test_missing_and_invalid(client, attr_dict, var_to_delete, invalid_var, invalid_value):
     attr_dict_new = dict(attr_dict)
     del attr_dict_new[var_to_delete]
     attr_dict_new[invalid_var] = invalid_value
-    response = client.get("\predict", params=attr_dict_new)
+    response = client.get("\predict", json=attr_dict_new)
     assert response.status_code == 400
      
 #Tests that check for response when argument is missing
