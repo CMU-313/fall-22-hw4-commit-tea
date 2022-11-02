@@ -66,6 +66,19 @@ def helper_test_valid(client, attr_dict):
 def test_all_valid(client, attr_dict_list):
 	for d in attr_dict_list:
 		helper_test_valid(client, d)  
+
+def helper_test_extra_var(client, attr_dict, new_var, val_to_add):
+    attr_dict_new = dict(attr_dict)
+    attr_dict_new[new_var] = val_to_add
+    response = client.get("\predict", params=attr_dict_new)
+    assert response.status_code == 422
+
+def helper_test_missing_and_invalid(client, attr_dict, var_to_delete, invalid_var, invalid_value):
+    attr_dict_new = dict(attr_dict)
+    del attr_dict_new[var_to_delete]
+    attr_dict_new[invalid_var] = invalid_value
+    response = client.get("\predict", params=attr_dict_new)
+    assert response.status_code == 400
      
 #Tests that check for response when argument is missing
 def test_Medu_missing(client): helper_test_missing_var(client, attr_dict, "Medu")
@@ -119,3 +132,7 @@ def test_absences_range(client): helper_test_range_var(client, attr_dict, "absen
 def test_extra_medu(client) : helper_test_extra_var(client, attr_dict, "medu", 4)
 def test_extra_random(client) : helper_test_extra_var(client, attr_dict, "extra", 4)
 def test_extra_health(client) : helper_test_extra_var(client, attr_dict, "HEALTH", 4)
+
+#Tests that missing variable error returned instead of invalid error when both are present
+def test_missing_paid_invalid_famsup(client): helper_test_missing_and_invalid(client, attr_dict, "Fjob", "higher", 1)
+def test_missing_reason_invalid_internet(client): helper_test_missing_and_invalid(client, attr_dict, "reason", "internet", 43)
