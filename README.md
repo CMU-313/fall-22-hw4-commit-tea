@@ -104,4 +104,5 @@ If you're not in the Pipenv shell, then execute the following command from the `
 pipenv run pytest
 ```
 
-###Yaml file can be found [here](https://github.com/CMU-313/fall-22-hw4-commit-tea/pull/3)
+### Yaml file
+Yaml file can be found [here](https://github.com/CMU-313/fall-22-hw4-commit-tea/pull/3)
