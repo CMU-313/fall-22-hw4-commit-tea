@@ -107,3 +107,6 @@ pipenv run pytest
 
 #### Location of Tests
 Tests can be found [here](https://github.com/CMU-313/fall-22-hw4-commit-tea/blob/api-tests/app/tests/test_routes.py)
+=======
+### Yaml file
+Yaml file can be found [here](https://github.com/CMU-313/fall-22-hw4-commit-tea/pull/3)
