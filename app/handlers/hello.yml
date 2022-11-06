@@ -1,0 +1,5 @@
+Home page for the application
+    ---
+    responses:
+      200:
+        description: Successful response
