@@ -2,6 +2,21 @@
 
 Please consult the [homework assignment](https://cmu-313.github.io//assignments/hw4) for additional context and instructions for this code.
 
+## Current Model
+The model that is currently stored in this repository has been trained to predict if a student is 'quality student,' meaning that they will achieve a final grade of 15 or higher. This prediction is uses a Random Forest Classifier based on:
+- the age of the student
+- their health
+- their number of absences
+- whether they have family educational support
+- whether they have internet access
+- their reason for choosing this school
+- how much time they have to study in a week
+
+A baseline model trained on the age, health, and number of absences of the student performed with 53.57% accuracy.
+Our new model performs with 84.87% accuracy.
+![image](https://user-images.githubusercontent.com/46876327/200191434-69f8fad3-8557-45b6-9fc6-9dd13baae4d3.png)
+
+
 ## pipenv
 
 [pipenv](https://pipenv.pypa.io/en/latest) is a packaging tool for Python that solves some common problems associated with the typical workflow using pip, virtualenv, and the good old requirements.txt.
@@ -31,7 +46,6 @@ The same instructions for Mac OS **should** work for windows, but if it doesn't,
 #### Downloading Packages
 
 The repository contains `Pipfile` that declares which packages are necessary to run the `model_build.ipnyb`.
-
 To install packages declared by the Pipfile, run `pipenv install` in the command line from the root directory.
 
 You might want to use additional packages throughout the assignment.
@@ -104,9 +118,3 @@ If you're not in the Pipenv shell, then execute the following command from the `
 ```terminal
 pipenv run pytest
 ```
-
-#### Location of Tests
-Tests can be found [here](https://github.com/CMU-313/fall-22-hw4-commit-tea/blob/api-tests/app/tests/test_routes.py)
-=======
-### Yaml file
-Yaml file can be found [here](https://github.com/CMU-313/fall-22-hw4-commit-tea/pull/3)
