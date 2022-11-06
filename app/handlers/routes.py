@@ -4,6 +4,8 @@ import joblib
 import pandas as pd
 import numpy as np
 import os
+from flasgger import Swagger, LazyString, LazyJSONEncoder
+from flasgger import swag_from
 
 def configure_routes(app):
     
@@ -12,11 +14,12 @@ def configure_routes(app):
     clf = joblib.load(model_path)
 
     @app.route('/')
+    @swag_from('hello.yml')
     def hello():
         return "try the predict route it is great!"
 
-
     @app.route('/predict')
+    @swag_from('predict.yml')
     def predict():
         #use entries from the query string here but could also use json
         age = request.args.get('age')
