@@ -6,7 +6,7 @@ import numpy as np
 import os
 
 def configure_routes(app):
-
+    
     this_dir = os.path.dirname(__file__)
     model_path = os.path.join(this_dir, "model.pkl")
     clf = joblib.load(model_path)
