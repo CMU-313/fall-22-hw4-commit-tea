@@ -74,7 +74,6 @@ def helper_test_missing_and_invalid(client, attr_dict, var_to_delete, invalid_va
     assert response.status_code == 400
      
 #Tests that check for response when argument is missing
-
 def test_age_missing(client): helper_test_missing_var(client, attr_dict, "age")
 def test_reason_missing(client): helper_test_missing_var(client, attr_dict, "reason")
 def test_studytime_missing(client): helper_test_missing_var(client, attr_dict, "studytime")
