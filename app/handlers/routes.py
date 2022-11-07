@@ -20,68 +20,123 @@ class InvalidAPIUsage(Exception):
         rv['message'] = self.message
         return rv
 
-@app.errorhandler(InvalidAPIUsage)
-def invalid_api_usage(e):
-    return jsonify(e.to_dict()), e.status_code
 
-def check_missing(var):
-    if not var:
-        raise InvalidAPIUsage("Parameter missing!", 400)
-
-def invalid_type(var):
-    
-    raise InvalidAPIUsage("Invalid type", 406)
-
-def out_of_range(var):
-    
-    raise InvalidAPIUsage("Variable out of range", 422)
-def validate(vars):
-    for var in vars:
-        check_missing(var)
-        invalid_type(var)
-        out_of_range(var)
 
 def configure_routes(app):
-
     this_dir = os.path.dirname(__file__)
     model_path = os.path.join(this_dir, "model.pkl")
     clf = joblib.load(model_path)
+    
+    @app.errorhandler(InvalidAPIUsage)
+    def invalid_api_usage(e):       
+        return jsonify(e.to_dict()), e.status_code
 
     @app.route('/')
     def hello():
         return "try the predict route it is great!"
+    
+    def check_missing(param, passed_args):
+        if param not in passed_args:
+            raise InvalidAPIUsage("Parameter missing!", 400)
+        
+    def invalid_type(param, var):
+        if (param == "age"):
+            if (not var.isnumeric()):
+                raise InvalidAPIUsage("Invalid type!", 406)
+        elif (param == "reason"):
+            if (not var.isalpha()):
+                    raise InvalidAPIUsage("Invalid type!", 406)  
+        elif (param == "studytime"):
+            if (not var.isnumeric()):
+                    raise InvalidAPIUsage("Invalid type!", 406)
+        elif (param == "famsup"):
+            if (not var.isalpha()):
+                raise InvalidAPIUsage("Invalid type!", 406)
+        elif (param == "internet"):
+            if (not var.isalpha()):
+                raise InvalidAPIUsage("Invalid type!", 406)
+        elif (param == "health"):
+            if (not var.isnumeric()):
+                raise InvalidAPIUsage("Invalid type!", 406)  
+        elif (param == "absences"):
+            if (not var.isnumeric()):
+                raise InvalidAPIUsage("Invalid type!", 406)
+                
+
+    def out_of_range(param, var):
+        if (param == "age"):
+            if (int(var) < 15 or int(var) > 22):
+                raise InvalidAPIUsage("Out of range!", 422)
+        elif (param == "reason"):
+            options = ['home', 'reputation', 'course', 'other']
+            if (var not in options):
+                raise InvalidAPIUsage("Out of range!", 422)
+        elif (param == "studytime"):
+            if (int(var) < 1 or int(var) > 4):
+                raise InvalidAPIUsage("Out of range!", 422)
+        elif (param == "famsup"):
+            if (var != "yes" and var != "no"):
+                raise InvalidAPIUsage("Out of range!", 422)
+        elif (param == "internet"):
+            if (var != "yes" and var != "no"):
+                raise InvalidAPIUsage("Out of range!", 422)
+        elif (param == "health"):
+            if (int(health) < 1 or int(health) > 5):
+                raise InvalidAPIUsage("Out of range!", 422)
+        elif (param == "absences"):
+            if (int(var) < 0 or int(var) > 93):
+                raise InvalidAPIUsage("Out of range!", 422)
+            
+    def validate(params, passed_args):
+        for i in range(len(params)):
+            check_missing(params[i], passed_args)
+        for i in range(len(params)):
+            invalid_type(params[i], passed_args[params[i]][0])
+        for i in range(len(params)):
+            out_of_range(params[i], passed_args[params[i]][0])        
+
+    def quantifyreason(reason):
+        if reason == 'home':
+            return 1
+        elif reason == 'reputation':
+            return 2
+        elif reason == 'course':
+            return 3
+        elif reason == 'other':
+            return 0
+    
+    def fix_values(df):
+        df['famsup'] = np.where(df['famsup']=='yes', 1, 0)
+        df['internet'] = np.where(df['internet']=='yes', 1, 0)
+        df['reason'] = df['reason'].apply(quantifyreason)
 
     @app.route('/predict')
     def predict():
         #use entries from the query string here but could also use json
-        Medu, Fedu, Mjob, Fjob, reason, studytime, failures, Schoolsup, Famsup, Paid, Higher, Internet, health, absences
-        Medu = request.args.get('Medu')
-        Fedu = request.args.get('Fedu')
-        Mjob = request.args.get('Mjob')
-        Fjob = request.args.get('Fjob')
+        age = request.args.get('age')
         reason = request.args.get('reason'),
         studytime = request.args.get('studytime'),
-        failures = request.args.get('failures')
-        Schoolsup = request.args.get('Schoolsup')
-        Famsup = request.args.get('Famsup'),
-        Paid = request.args.get('Paid')
-        Higher = request.args.get('Higher')
-        Internet = request.args.get('Internet'),
+        famsup = request.args.get('famsup'),
+        internet = request.args.get('internet'),
         health = request.args.get('health'),
         absences = request.args.get('absences'),
-        data = [[age], [health], [absences]]
-        validate(data)
-        if (length(request.args) > EXPECTED):
-            raise  invalid_api_usage('Additional variables', 422)
-        # age = request.args.get('age')
-        # absences = request.args.get('absences')
-        # health = request.args.get('health')
-        # data = [[age], [health], [absences]]
-        # query_df = pd.DataFrame({
-        #     'age': pd.Series(age),
-        #     'health': pd.Series(health),
-        #     'absences': pd.Series(absences)
-        # })
-        # query = pd.get_dummies(query_df)
-        # prediction = clf.predict(query)
-        # return jsonify(np.ndarray.item(prediction))
+        data = [[age], [reason], [studytime], [famsup], [internet], [health], [absences]]
+        param_names = ['age', 'reason', 'studytime', 'famsup', 'internet', 'health', 'absences']
+        passed_args = request.args.to_dict(flat=False)
+        if (len(request.args) > len(param_names)):
+            raise InvalidAPIUsage("Extra parameters!", 422)
+        validate(param_names, passed_args)
+        
+        query_df = pd.DataFrame({
+            'age': pd.Series(age),
+            'reason': pd.Series(reason),
+            'studytime': pd.Series(studytime),
+            'famsup': pd.Series(famsup),
+            'internet': pd.Series(famsup),
+            'health': pd.Series(health),
+            'absences': pd.Series(absences)
+        })
+        fix_values(query_df)
+        query = pd.get_dummies(query_df)
+        prediction = clf.predict(query)
+        return jsonify(np.ndarray.item(prediction))
