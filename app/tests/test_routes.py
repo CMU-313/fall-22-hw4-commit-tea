@@ -97,10 +97,10 @@ def test_absences_missing(client): helper_test_missing_var(client, attr_dict, "a
 def test_age_invalid(client): helper_test_invalid_var(client, attr_dict, "age", "not_an_age")
 def test_reason_invalid(client): helper_test_invalid_var(client, attr_dict, "reason", 25)
 def test_studytime_invalid(client): helper_test_invalid_var(client, attr_dict, "studytime", "3 hours")
-def test_famsup_invalid(client): helper_test_range_var(client, attr_dict, "famsup", 20)
-def test_internet_invalid(client): helper_test_range_var(client, attr_dict, "internet", 43)
-def test_health_invalid(client): helper_test_range_var(client, attr_dict, "health", "not_an_int")
-def test_absences_invalid(client): helper_test_range_var(client, attr_dict, "absences", "not_an_int")
+def test_famsup_invalid(client): helper_test_invalid_var(client, attr_dict, "famsup", 20)
+def test_internet_invalid(client): helper_test_invalid_var(client, attr_dict, "internet", 43)
+def test_health_invalid(client): helper_test_invalid_var(client, attr_dict, "health", "not_an_int")
+def test_absences_invalid(client): helper_test_invalid_var(client, attr_dict, "absences", "not_an_int")
 
 #Tests that check when when a parameter is out of bounds but is the correct type
 def test_age_range(client): helper_test_range_var(client, attr_dict, "age", 5)

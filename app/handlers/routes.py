@@ -81,7 +81,7 @@ def configure_routes(app):
             if (var != "yes" and var != "no"):
                 raise InvalidAPIUsage("Out of range!", 422)
         elif (param == "health"):
-            if (int(health) < 1 or int(health) > 5):
+            if (int(var) < 1 or int(var) > 5):
                 raise InvalidAPIUsage("Out of range!", 422)
         elif (param == "absences"):
             if (int(var) < 0 or int(var) > 93):
