@@ -4,6 +4,8 @@ import joblib
 import pandas as pd
 import numpy as np
 import os
+from flasgger import Swagger, LazyString, LazyJSONEncoder
+from flasgger import swag_from
 
 class InvalidAPIUsage(Exception):
     status_code = 400
@@ -32,6 +34,7 @@ def configure_routes(app):
         return jsonify(e.to_dict()), e.status_code
 
     @app.route('/')
+    @swag_from('hello.yml')
     def hello():
         return "try the predict route it is great!"
     
@@ -110,7 +113,9 @@ def configure_routes(app):
         df['internet'] = np.where(df['internet']=='yes', 1, 0)
         df['reason'] = df['reason'].apply(quantifyreason)
 
+
     @app.route('/predict')
+    @swag_from('predict.yml')
     def predict():
         #use entries from the query string here but could also use json
         age = request.args.get('age')
@@ -139,4 +144,5 @@ def configure_routes(app):
         fix_values(query_df)
         query = pd.get_dummies(query_df)
         prediction = clf.predict(query)
+
         return jsonify(np.ndarray.item(prediction))
